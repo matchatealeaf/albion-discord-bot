@@ -3,6 +3,7 @@ from discord.ext import commands
 import urllib.request
 import json
 import datetime as DT
+import configparser
 
 
 class Search(commands.Cog):
@@ -21,8 +22,17 @@ class Search(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-        # Set debug channel
-        self.debugChannel = client.get_channel(12345678)
+        # Load config.ini and get configs
+        configs = configparser.ConfigParser()
+        configs.read('./config.ini')
+
+        debugChannel = int(configs['Channels']['debugChannelID'])
+        workChannel = [int(ID) for ID in configs['Channels']['workChannelID'].split(', ')]
+        self.debugChannel = client.get_channel(debugChannel)
+        self.workChannel = workChannel
+
+        self.onlyWork = configs['General'].getboolean('onlyWork')
+        self.debug = configs['General'].getboolean('debug')
 
         # API URLs
         self.allianceURL = 'https://gameinfo.albiononline.com/api/gameinfo/alliances/'  # + ID
@@ -38,8 +48,14 @@ class Search(commands.Cog):
     async def search(self, ctx, option, *, name):
         """Search and retrieve details for players and guilds."""
 
-        # Enable/Disable debug message
-        #await self.debugChannel.send(f'{ctx.author} -> search {option} {name}')
+        # Debug message
+        if self.debug:
+            await self.debugChannel.send(f'{ctx.author} -> search {option} {name}')
+
+        # Check if in workChannel
+        if self.onlyWork:
+            if ctx.channel.id not in self.workChannel:
+                return
 
         await ctx.channel.trigger_typing()
 

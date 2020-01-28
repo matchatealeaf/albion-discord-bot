@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import configparser
 
 
 class Utils(commands.Cog):
@@ -35,16 +36,32 @@ class Utils(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-        # Set debug channel and admin users
-        self.debugChannel = client.get_channel(12345678)
-        self.adminUsers = ['username#1234']
+        # Load config.ini and get configs
+        configs = configparser.ConfigParser()
+        configs.read('./config.ini')
+
+        debugChannel = int(configs['Channels']['debugChannelID'])
+        workChannel = [int(ID) for ID in configs['Channels']['workChannelID'].split(', ')]
+        self.debugChannel = client.get_channel(debugChannel)
+        self.workChannel = workChannel
+
+        self.onlyWork = configs['General'].getboolean('onlyWork')
+        self.debug = configs['General'].getboolean('debug')
+
+        self.adminUsers = configs['General']['adminUsers'].replace("'", "").split(', ')
 
     @commands.command(aliases=['Ping'])
     async def ping(self, ctx):
         """Returns latency of bot."""
 
-        # Enable/Disable debug message here
-        #await self.debugChannel.send(f'{ctx.author} -> ping')
+        # Debug message
+        if self.debug:
+            await self.debugChannel.send(f'{ctx.author} -> ping')
+
+        # Check if in workChannel
+        if self.onlyWork:
+            if ctx.channel.id not in self.workChannel:
+                return
 
         # Checks if admin
         if str(ctx.author) not in self.adminUsers:
@@ -61,8 +78,14 @@ class Utils(commands.Cog):
         - Only allows adminUser to execute codes.
         """
 
-        # Enable/Disable debug message here (recommend to enable)
-        #await self.debugChannel.send(f'{ctx.author} -> exec {codes}')
+        # Debug message
+        if self.debug:
+            await self.debugChannel.send(f'{ctx.author} -> exec {codes}')
+
+        # Check if in workChannel
+        if self.onlyWork:
+            if ctx.channel.id not in self.workChannel:
+                return
 
         # Check if admin
         if str(ctx.author) not in self.adminUsers:
@@ -96,8 +119,14 @@ class Utils(commands.Cog):
         - eval function can only evalulate variables.
         """
 
-        # Enable/Disable debug message here
-        #await self.debugChannel.send(f'{ctx.author} -> eval {codes}')
+        # Debug message
+        if self.debug:
+            await self.debugChannel.send(f'{ctx.author} -> exec {codes}')
+
+        # Check if in workChannel
+        if self.onlyWork:
+            if ctx.channel.id not in self.workChannel:
+                return
 
         # Check if admin
         if str(ctx.author) not in self.adminUsers:

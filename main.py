@@ -3,12 +3,17 @@ from discord.ext import commands
 import os
 import keep_alive
 import logging
+import configparser
 
-# Change adminUsers to your discord username (can have mutliple adminUsers)
+
+# Load config.ini
+configs = configparser.ConfigParser()
+configs.read('config.ini')
+
 # adminUsers gets to load/unload/reload cogs
-# Change commandPrefix to whatever you want
-adminUsers = ['username#1234']
-commandPrefix = ['emilie ', 'Emilie ']
+adminUsers = configs['General']['adminUsers'].replace("'", "").split(', ')
+commandPrefix = configs['General']['commandPrefix'].replace("'", "").split(', ')
+
 client = commands.Bot(command_prefix=commandPrefix)
 
 # Set up logging to discord.log
@@ -92,8 +97,7 @@ async def extension(ctx, option, extension):
     await ctx.send(f'{extension} extension {option.upper()}ED.')
 
 
-# Change the token to your bot's token
 # Copy from your Discord developer portal
-token = 'abcdefghijklmnopqrstuvwxyz'
+token = configs['TOKEN']['botToken']
 client.run(token)
 

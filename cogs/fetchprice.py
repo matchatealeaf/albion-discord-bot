@@ -7,6 +7,7 @@ import statistics
 from difflib import SequenceMatcher
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import configparser
 
 
 class FetchPrice(commands.Cog):
@@ -32,12 +33,17 @@ class FetchPrice(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-        # Bot will send command logs to debugChannel (channel id)
-        # Bot will only work in workChannel (channel id)
-        # You can get channel id by right clicking on channels after enabling developer mode under appearance settings
-        # Can disable either or both
-        self.debugChannel = client.get_channel(12345678)
-        self.workChannel = [12345678]
+        # Load config.ini and get configs
+        configs = configparser.ConfigParser()
+        configs.read('./config.ini')
+
+        debugChannel = int(configs['Channels']['debugChannelID'])
+        workChannel = [int(ID) for ID in configs['Channels']['workChannelID'].split(', ')]
+        self.debugChannel = client.get_channel(debugChannel)
+        self.workChannel = workChannel
+
+        self.onlyWork = configs['General'].getboolean('onlyWork')
+        self.debug = configs['General'].getboolean('debug')
 
         # API URLs
         self.apiURL = 'https://www.albion-online-data.com/api/v2/stats/prices/'
@@ -67,14 +73,14 @@ class FetchPrice(commands.Cog):
         # Get command (price or quick)
         command = ctx.message.content.split()[1]
 
-        '''Enable/Disable Debug message and work channel here
         # Debug message
-        await self.debugChannel.send(f'{ctx.author} -> {command} {item}')
+        if self.debug:
+            await self.debugChannel.send(f'{ctx.author} -> {command} {item}')
 
         # Check if in workChannel
-        if ctx.channel.id not in self.workChannel:
-            return
-        '''
+        if self.onlyWork:
+            if ctx.channel.id not in self.workChannel:
+                return
 
         await ctx.channel.trigger_typing()
 
@@ -214,11 +220,10 @@ class FetchPrice(commands.Cog):
             # Add delete reaction button
             await msg.add_reaction('\u274c')
 
-            '''Enable/Disable success debug message here
-            await self.debugChannel.send(
-                f"{ctx.author} -> {command} {item} | Matched -> {itemNames[0]} ({itemIDs[0]})"
-            )
-            '''
+            if self.debug:
+                await self.debugChannel.send(
+                    f"{ctx.author} -> {command} {item} | Matched -> {itemNames[0]} ({itemIDs[0]})"
+                )
 
     # Error message of prices
     @prices.error
