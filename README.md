@@ -114,7 +114,8 @@ emilie extension <option> <cogs filenames>
 ```
 + `<option>` can be `load`, `unload`, `reload`.
 + Load/Unload/Reload cogs in the cogs folder, e.g. if you want to remove or add certain features.
-```emilie ping
+```
+emilie ping
 ```
 + Bot will return the latency.
 ```
