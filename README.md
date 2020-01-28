@@ -26,7 +26,7 @@ Unfortunately I am unable to host the bot right now. So you would have to **host
 
 1. Download all the files in this repository, and the requirements. (Look at **Requirements** below)
 2. In your bot page in Discord's developer portal, copy the bot's **TOKEN**.
-3. Edit **main.py**, at the very bottom change `token = 'abcdefghijklmnopqrstuvwxyz'` to `token = 'your copied token'`. This is to tell the program to use your bot account.
+3. Edit **config.ini**, and change `botToken = 'abcdefghijklmnopqrstuvwxyz'` to `botToken = 'your copied token'`. This is to tell the program to use your bot account.
 4. Open **cmd** or your **terminal** in the directory where you downloaded the files. Run `python main.py`.
 5. Your bot should now be hosted on your computer and you should see the message:
 ```
@@ -48,24 +48,28 @@ Connected to:
 Your server name
 ```
 
-#### Extra for people who knows discord.py and Python 
+#### Extras
 
-1. Inside **main.py** you can change or append:
-```python
-adminUsers = ['username#1234']
-commandPrefix = ['emilie ', 'Emilie' ]
+1. Inside **config.ini** you can change or append:
+```ini
+adminUsers = 'username1#1234', 'username2#1234'
+commandPrefix = 'emilie ', 'Emilie '
 ```
-  + Being an admin user allows you to load/unload/reload cogs.
   + commandPrefix is how the bot should be called.
-2. Inside **cogs/utils.py** you can change or append:
-```python
-self.adminUsers = ['username#1234']
-```
+  + Being an admin user allows you to load/unload/reload cogs, and access **utils.py** commands.
   + The **utils.py** cog contain powerful commands that should only be callable by admin users.
   + Such commands can be abused to spam the server or to kick members. (Refer to **Features** below)
-3. Some other settings for the other cogs.
-  + Set and enable debug channel, for bot to send commands log to said debug channel.
-  + Set and enable work channels, for bot to only works on said work channels.
+
+2. You can also change:
+```ini
+debugChannelID = 12345678
+workChannelID = 12345678, 12345678
+debug = False
+onlyWork = False
+```
+  + If **debug** is True, then bot will send debug messages to the channel specified by **debugChannelID**.
+  + If **onlyWork** is True, then bot will only work in channels specified by **workChannelID**.
+  + Channel IDs can be obtained by first enabling developer mode in Discord under Settings>Appearance. Then right clicking on a channel and click on Copy ID.
 
 ### Requirements
 
@@ -76,7 +80,7 @@ self.adminUsers = ['username#1234']
   + flask is a micro web framework to host your bot.
 + [matplotlib](https://matplotlib.org/)
   + matplotlib is required to plot the 7 days historical prices.
-  
+
   To install the required Python libraries, run the command:
   ```
   pip install discord.py flask matplotlib
