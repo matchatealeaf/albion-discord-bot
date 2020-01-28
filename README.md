@@ -26,7 +26,7 @@ Unfortunately I am unable to host the bot right now. So you would have to **host
 
 1. Download all the files in this repository, and the requirements. (Look at **Requirements** below)
 2. In your bot page in Discord's developer portal, copy the bot's **TOKEN**.
-3. Edit **config.ini**, and change `botToken = 'abcdefghijklmnopqrstuvwxyz'` to `botToken = 'your copied token'`. This is to tell the program to use your bot account.
+3. Edit **config.ini**, and change `botToken = abcdefghijklmnopqrstuvwxyz` to `botToken = your copied token`. This is to tell the program to use your bot account.
 4. Open **cmd** or your **terminal** in the directory where you downloaded the files. Run `python main.py`.
 5. Your bot should now be hosted on your computer and you should see the message:
 ```
@@ -67,7 +67,7 @@ workChannelID = 12345678, 12345678
 debug = False
 onlyWork = False
 ```
-  + If **debug** is True, then bot will send debug messages to the channel specified by **debugChannelID**.
+  + If **debug** is True, then the bot will send debug messages to the channel specified by **debugChannelID**.
   + If **onlyWork** is True, then bot will only work in channels specified by **workChannelID**.
   + Channel IDs can be obtained by first enabling developer mode in Discord under Settings>Appearance. Then right clicking on a channel and click on Copy ID.
 
@@ -114,6 +114,9 @@ emilie extension <option> <cogs filenames>
 ```
 + `<option>` can be `load`, `unload`, `reload`.
 + Load/Unload/Reload cogs in the cogs folder, e.g. if you want to remove or add certain features.
+```emilie ping
+```
++ Bot will return the latency.
 ```
 emilie eval <python variables/generators>
 ```
