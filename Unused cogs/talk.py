@@ -26,14 +26,15 @@ class Talk(commands.Cog):
         - welcome_message
             - Returns the welcome message for members.
     """
+
     def __init__(self, client):
         self.client = client
 
         # Set debug channel and admin user here
         self.debugChannel = client.get_channel(12345678)
-        self.adminUsers = ['username#1234']
+        self.adminUsers = ["username#1234"]
 
-        self.memberRoles = ['Member']
+        self.memberRoles = ["Member"]
 
         # The channel to send welcome message
         self.generalChannel = client.get_channel(12345678)
@@ -42,10 +43,10 @@ class Talk(commands.Cog):
     async def on_member_join(self, member):
         """Send a welcome message on self.generalChannel when someone joined."""
 
-        '''Enable/Disable debug message here
+        """Enable/Disable debug message here
         await self.debugChannel.send(
             f'{member.name} joined {member.guild.name}')
-        '''
+        """
 
         message = f"{member.mention}\nWelcome to the the guild!"
         await self.generalChannel.send(message)
@@ -55,7 +56,7 @@ class Talk(commands.Cog):
         """Send a message to self.debugChannel when someone left the server."""
 
         # Enable/Disable debug message here
-        #await self.debugChannel.send(f'{member.name} left {member.guild.name}')
+        # await self.debugChannel.send(f'{member.name} left {member.guild.name}')
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
@@ -66,12 +67,12 @@ class Talk(commands.Cog):
         afterRoles = [str(role) for role in after.roles]
 
         # Check if user became a member
-        if 'Member' not in beforeRoles and 'Member' in afterRoles:
+        if "Member" not in beforeRoles and "Member" in afterRoles:
 
-            '''Enable/Disable debug message here
+            """Enable/Disable debug message here
             await self.debugChannel.send(
                 f'{before.name} became a member!')
-            '''
+            """
 
             # Get direct messages
             message = self.welcome_message()
@@ -79,10 +80,10 @@ class Talk(commands.Cog):
             try:
                 await before.send(message)
                 # Enable/Disable debug message here
-                #await self.debugChannel.send(f'Welcome messages sent to {before.name}')
+                # await self.debugChannel.send(f'Welcome messages sent to {before.name}')
             except:
                 # Enable/Disable debug message here
-                #await self.debugChannel.send(f'Welcome messages failed to send to {before.name}')
+                # await self.debugChannel.send(f'Welcome messages failed to send to {before.name}')
                 pass
 
     @commands.command()
@@ -90,7 +91,7 @@ class Talk(commands.Cog):
         """Send direct message to specific user."""
 
         # Enable/Disable debug message here
-        #await self.debugChannel.send(f'{ctx.author} -> send_info_to {userID}')
+        # await self.debugChannel.send(f'{ctx.author} -> send_info_to {userID}')
 
         # Only callable for admins
         if str(ctx.author) not in self.adminUsers:
@@ -109,19 +110,19 @@ class Talk(commands.Cog):
             errorUsers = user.name
 
             # Enable/Disable debug message here
-            #await self.debugChannel.send(f'Welcome message not sent to {errorUsers}')
+            # await self.debugChannel.send(f'Welcome message not sent to {errorUsers}')
 
             pass
 
         # Enable/Disable debug message here
-        #await self.debugChannel.send(f'Welcome messages sent to {user.name}')
+        # await self.debugChannel.send(f'Welcome messages sent to {user.name}')
 
     @commands.command()
     async def send_info_all(self, ctx):
         """Send direct message to all members."""
 
         # Enable/Disable debug message here
-        #await self.debugChannel.send(f'{ctx.author} -> send_info')
+        # await self.debugChannel.send(f'{ctx.author} -> send_info')
 
         # Only callable for admins
         if str(ctx.author) not in self.adminUsers:
@@ -130,8 +131,8 @@ class Talk(commands.Cog):
         # Get direct messages
         message = self.welcome_message()
 
-        sentto = ''
-        errorUsers = ''
+        sentto = ""
+        errorUsers = ""
 
         # Only send to members who have Member role
         for member in self.client.guilds[0].members:
@@ -139,15 +140,15 @@ class Talk(commands.Cog):
             if set(roles) & set(self.memberRoles):
                 try:
                     await member.send(message)
-                    sentto += str(member.name) + ', '
+                    sentto += str(member.name) + ", "
                 except:
-                    errorUsers += str(member.name) + ', '
+                    errorUsers += str(member.name) + ", "
 
-        '''Enable/Disable debug message here
+        """Enable/Disable debug message here
         await self.debugChannel.send(f'Welcome messages sent to {sentto}')
         await self.debugChannel.send(
             f'Welcome messages failed to send to {errorUsers}')
-        '''
+        """
 
     def welcome_message(self):
 

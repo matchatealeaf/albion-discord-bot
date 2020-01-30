@@ -38,25 +38,27 @@ class Utils(commands.Cog):
 
         # Load config.ini and get configs
         configs = configparser.ConfigParser()
-        configs.read('./config.ini')
+        configs.read("./config.ini")
 
-        debugChannel = int(configs['Channels']['debugChannelID'])
-        workChannel = [int(ID) for ID in configs['Channels']['workChannelID'].split(', ')]
+        debugChannel = int(configs["Channels"]["debugChannelID"])
+        workChannel = [
+            int(ID) for ID in configs["Channels"]["workChannelID"].split(", ")
+        ]
         self.debugChannel = client.get_channel(debugChannel)
         self.workChannel = workChannel
 
-        self.onlyWork = configs['General'].getboolean('onlyWork')
-        self.debug = configs['General'].getboolean('debug')
+        self.onlyWork = configs["General"].getboolean("onlyWork")
+        self.debug = configs["General"].getboolean("debug")
 
-        self.adminUsers = configs['General']['adminUsers'].replace("'", "").split(', ')
+        self.adminUsers = configs["General"]["adminUsers"].replace("'", "").split(", ")
 
-    @commands.command(aliases=['Ping'])
+    @commands.command(aliases=["Ping"])
     async def ping(self, ctx):
         """Returns latency of bot."""
 
         # Debug message
         if self.debug:
-            await self.debugChannel.send(f'{ctx.author} -> ping')
+            await self.debugChannel.send(f"{ctx.author} -> ping")
 
         # Check if in workChannel
         if self.onlyWork:
@@ -67,9 +69,9 @@ class Utils(commands.Cog):
         if str(ctx.author) not in self.adminUsers:
             return
 
-        await ctx.send(f'Pong! {round(self.client.latency * 1000)}ms')
+        await ctx.send(f"Pong! {round(self.client.latency * 1000)}ms")
 
-    @commands.command(aliases=['Exec', 'python', 'Python'])
+    @commands.command(aliases=["Exec", "python", "Python"])
     async def exec(self, ctx, *, codes):
         """Execute Python codes with exec function
 
@@ -80,7 +82,7 @@ class Utils(commands.Cog):
 
         # Debug message
         if self.debug:
-            await self.debugChannel.send(f'{ctx.author} -> exec {codes}')
+            await self.debugChannel.send(f"{ctx.author} -> exec {codes}")
 
         # Check if in workChannel
         if self.onlyWork:
@@ -94,24 +96,24 @@ class Utils(commands.Cog):
         await ctx.channel.trigger_typing()
 
         # Strip ```python and ``` if exists
-        if codes[:9] == '```python':
+        if codes[:9] == "```python":
             codes = codes[9:]
             codes = codes[:-3]
-        elif codes[:3] == '```':
+        elif codes[:3] == "```":
             codes = codes[3:]
             codes = codes[:-3]
 
         # Execute code
         # Send exception with bot if exception raised
         # Can reassign self.msg in exec codes to get bot to send messages
-        self.msg = 'Code executed.'
+        self.msg = "Code executed."
         try:
-            exec(f'{codes}')
+            exec(f"{codes}")
             await ctx.send(self.msg)
         except Exception as e:
             await ctx.send(e)
 
-    @commands.command(aliases=['Eval'])
+    @commands.command(aliases=["Eval"])
     async def eval(self, ctx, *, codes):
         """Evalute Python variables with eval function.
 
@@ -121,7 +123,7 @@ class Utils(commands.Cog):
 
         # Debug message
         if self.debug:
-            await self.debugChannel.send(f'{ctx.author} -> exec {codes}')
+            await self.debugChannel.send(f"{ctx.author} -> exec {codes}")
 
         # Check if in workChannel
         if self.onlyWork:
@@ -135,16 +137,16 @@ class Utils(commands.Cog):
         await ctx.channel.trigger_typing()
 
         # Strip ```python and ``` if exists
-        if codes[:9] == '```python':
+        if codes[:9] == "```python":
             codes = codes[9:]
             codes = codes[:-3]
-        elif codes[:3] == '```':
+        elif codes[:3] == "```":
             codes = codes[3:]
             codes = codes[:-3]
 
         # Evalulate with eval and send exception if raised
         try:
-            msg = eval(f'{codes}')
+            msg = eval(f"{codes}")
             await ctx.send(msg)
         except Exception as e:
             await ctx.send(e)
@@ -170,8 +172,11 @@ class Utils(commands.Cog):
         # it is bot's message,
         # reaction is not by bot (bot adds reaction after each message)
         # reaction emoji is \u274c (the :x: emoji)
-        if msg.author == self.client.user and user != self.client.user and str(
-                emoji) == '\u274c':
+        if (
+            msg.author == self.client.user
+            and user != self.client.user
+            and str(emoji) == "\u274c"
+        ):
             await msg.delete()
 
 
