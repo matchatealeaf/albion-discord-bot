@@ -90,7 +90,7 @@ onlyWork = False
   ```
   Or if you have `conda` installed:
   ```
-  conda install discord.py flask matplotlib
+  conda install flask matplotlib
   ```
 
 ## Features
