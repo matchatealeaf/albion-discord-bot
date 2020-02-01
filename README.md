@@ -153,7 +153,7 @@ I don't have to implement anything if I can simply run arbitrary codes.
 + Item data search to show recipes etc.
   + This is also possible but not implemented yet.
   + The item API is already included in the the cog **cogs/search.py**, but nothing is done with it yet.
-+ Host a bot myself so people can use the bot without having to host their own.
++ ~~Host a bot myself so people can use the bot without having to host their own.~~
 
 ## Extra Background
 
