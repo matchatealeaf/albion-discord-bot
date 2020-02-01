@@ -7,8 +7,9 @@ import configparser
 
 
 # Load config.ini
+currentPath = os.path.dirname(os.path.realpath(__file__))
 configs = configparser.ConfigParser()
-configs.read("config.ini")
+configs.read(currentPath + "/config.ini")
 
 # adminUsers gets to load/unload/reload cogs
 adminUsers = configs["General"]["adminUsers"].replace("'", "").split(", ")
@@ -44,7 +45,7 @@ async def on_ready():
 
     # Load cogs in folder /cogs
     try:
-        for filename in os.listdir("./cogs"):
+        for filename in os.listdir(currentPath + "/cogs"):
             if filename.endswith(".py"):
                 client.load_extension(f"cogs.{filename[:-3]}")
     except Exception as e:

@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2020-02-01
+
+### Changes
+
+- Changed file lookup to real path instead of relative to working directory.
+	- This fixed issues when working directory is not in the same folder as **main.py**.
+
 ## 2020-01-30
 
 ### Changes

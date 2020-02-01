@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import configparser
+import os
 
 
 class Utils(commands.Cog):
@@ -37,8 +38,9 @@ class Utils(commands.Cog):
         self.client = client
 
         # Load config.ini and get configs
+        currentPath = os.path.dirname(os.path.realpath(__file__))
         configs = configparser.ConfigParser()
-        configs.read("./config.ini")
+        configs.read(os.path.dirname(currentPath) + "/config.ini")
 
         debugChannel = int(configs["Channels"]["debugChannelID"])
         workChannel = [

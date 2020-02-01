@@ -8,6 +8,7 @@ from difflib import SequenceMatcher
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import configparser
+import os
 
 
 class FetchPrice(commands.Cog):
@@ -34,8 +35,9 @@ class FetchPrice(commands.Cog):
         self.client = client
 
         # Load config.ini and get configs
+        currentPath = os.path.dirname(os.path.realpath(__file__))
         configs = configparser.ConfigParser()
-        configs.read("./config.ini")
+        configs.read(os.path.dirname(currentPath) + "/config.ini")
 
         debugChannel = int(configs["Channels"]["debugChannelID"])
         workChannel = [
@@ -60,7 +62,7 @@ class FetchPrice(commands.Cog):
 
         # Bot will search items through this list
         # There are also different localization names
-        self.itemList = "item_data.json"
+        self.itemList = os.path.dirname(currentPath) + "/item_data.json"
 
     @commands.command(
         aliases=[
@@ -257,7 +259,7 @@ class FetchPrice(commands.Cog):
         jDists = []
 
         try:
-            with open("item_data.json", "r", encoding="utf-8") as inFile:
+            with open(self.itemList, "r", encoding="utf-8") as inFile:
                 data = json.load(inFile)
         except Exception as e:
             print(e)
