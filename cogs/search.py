@@ -56,7 +56,7 @@ class Search(commands.Cog):
         # API can provide recipe
         self.itemURL = "https://gameinfo.albiononline.com/api/gameinfo/items/"  # + item name + /data
 
-    @commands.command(aliases=["Search"])
+    @commands.command()
     async def search(self, ctx, option, *, name):
         """Search and retrieve details for players and guilds."""
 

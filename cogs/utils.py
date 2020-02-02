@@ -54,7 +54,7 @@ class Utils(commands.Cog):
 
         self.adminUsers = configs["General"]["adminUsers"].replace("'", "").split(", ")
 
-    @commands.command(aliases=["Ping"])
+    @commands.command()
     async def ping(self, ctx):
         """Returns latency of bot."""
 
@@ -73,7 +73,7 @@ class Utils(commands.Cog):
 
         await ctx.send(f"Pong! {round(self.client.latency * 1000)}ms")
 
-    @commands.command(aliases=["Exec", "python", "Python"])
+    @commands.command(aliases=["python"])
     async def exec(self, ctx, *, codes):
         """Execute Python codes with exec function
 
@@ -115,7 +115,7 @@ class Utils(commands.Cog):
         except Exception as e:
             await ctx.send(e)
 
-    @commands.command(aliases=["Eval"])
+    @commands.command()
     async def eval(self, ctx, *, codes):
         """Evalute Python variables with eval function.
 
@@ -125,7 +125,7 @@ class Utils(commands.Cog):
 
         # Debug message
         if self.debug:
-            await self.debugChannel.send(f"{ctx.author} -> exec {codes}")
+            await self.debugChannel.send(f"{ctx.author} -> eval {codes}")
 
         # Check if in workChannel
         if self.onlyWork:

@@ -15,7 +15,9 @@ configs.read(currentPath + "/config.ini")
 adminUsers = configs["General"]["adminUsers"].replace("'", "").split(", ")
 commandPrefix = configs["General"]["commandPrefix"].replace("'", "").split(", ")
 
-client = commands.Bot(command_prefix=commandPrefix)
+client = commands.Bot(
+    command_prefix=commands.when_mentioned_or(*commandPrefix), case_insensitive=True
+)
 
 # Set up logging to discord.log
 logger = logging.getLogger("discord")

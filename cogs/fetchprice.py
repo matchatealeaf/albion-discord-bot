@@ -51,30 +51,17 @@ class FetchPrice(commands.Cog):
 
         # API URLs
         self.apiURL = "https://www.albion-online-data.com/api/v2/stats/prices/"
-        self.locationURL = (
-            "?locations=Caerleon,Lymhurst,Martlock,Bridgewatch,FortSterling,Thetford"
-        )
+        self.locationURL = "?locations=Caerleon,Lymhurst,Martlock,Bridgewatch,FortSterling,Thetford,ArthursRest,MerlynsRest,MorganasRest"
         self.iconURL = "https://gameinfo.albiononline.com/api/gameinfo/items/"
         self.historyURL = "https://www.albion-online-data.com/api/v1/stats/charts/"
-        self.historyLocationURL = (
-            "&locations=Thetford,Martlock,Caerleon,Lymhurst,Bridgewatch,FortSterling"
-        )
+        self.historyLocationURL = "&locations=Thetford,Martlock,Caerleon,Lymhurst,Bridgewatch,FortSterling,ArthursRest,MerlynsRest,MorganasRest"
 
         # Bot will search items through this list
         # There are also different localization names
         self.itemList = os.path.dirname(currentPath) + "/item_data.json"
 
     @commands.command(
-        aliases=[
-            "Prices",
-            "price",
-            "Price",
-            "PRICE",
-            "PRICES",
-            "quick",
-            "Quick",
-            "QUICK",
-        ]
+        aliases=["price", "quick",]
     )
     async def prices(self, ctx, *, item):
         """Fetch current prices from Data Project API.
@@ -87,7 +74,7 @@ class FetchPrice(commands.Cog):
         """
 
         # Get command (price or quick)
-        command = ctx.message.content.split()[1]
+        command = ctx.message.content.split()
 
         # Debug message
         if self.debug:
@@ -213,7 +200,7 @@ class FetchPrice(commands.Cog):
 
             try:
                 # Skip plotting if command is quick
-                if command.lower() == "quick":
+                if any(["quick" in c.lower() for c in command[:2]]):
                     raise Exception
 
                 # Trigger typing again so that user know its still loading
@@ -349,11 +336,11 @@ class FetchPrice(commands.Cog):
         for i in range(1, 1 + numDays):
             dates[i - 1] = (today - DT.timedelta(days=i)).strftime("%m-%d-%Y")
 
-        # List will have 6 different indices for 6 different cities
+        # List will have 9 different indices for 9 different cities
         # The indices corresponds to this ordering of cities (Alphabetical):
-        # Bridgewatch, Caerleon, Fort Sterling, Lymhurst, Martlock, Thetford
-        prices_minAll = [[], [], [], [], [], []]
-        timestampsAll = [[], [], [], [], [], []]
+        # Arthurs, Bridgewatch, Caerleon, Fort Sterling, Lymhurst, Martlock, Merlyns, Morganas, Thetford
+        prices_minAll = [[], [], [], [], [], [], [], [], []]
+        timestampsAll = [[], [], [], [], [], [], [], [], []]
 
         # Retrieve prices and timestamps of each city from each date
         for date in dates:
@@ -373,24 +360,33 @@ class FetchPrice(commands.Cog):
                 # Iterates over each city's prices
                 # and extend data to their corresponding index
                 for price in prices:
-                    if price["location"] == "Bridgewatch":
+                    if price["location"] == "Arthurs Rest":
                         prices_minAll[0].extend(price["data"]["prices_min"])
                         timestampsAll[0].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Caerleon":
+                    elif price["location"] == "Bridgewatch":
                         prices_minAll[1].extend(price["data"]["prices_min"])
                         timestampsAll[1].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Fort Sterling":
+                    elif price["location"] == "Caerleon":
                         prices_minAll[2].extend(price["data"]["prices_min"])
                         timestampsAll[2].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Lymhurst":
+                    elif price["location"] == "Fort Sterling":
                         prices_minAll[3].extend(price["data"]["prices_min"])
                         timestampsAll[3].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Martlock":
+                    elif price["location"] == "Lymhurst":
                         prices_minAll[4].extend(price["data"]["prices_min"])
                         timestampsAll[4].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Thetford":
+                    elif price["location"] == "Martlock":
                         prices_minAll[5].extend(price["data"]["prices_min"])
                         timestampsAll[5].extend(price["data"]["timestamps"])
+                    elif price["location"] == "Merlyns Rest":
+                        prices_minAll[6].extend(price["data"]["prices_min"])
+                        timestampsAll[6].extend(price["data"]["timestamps"])
+                    elif price["location"] == "Morganas Rest":
+                        prices_minAll[7].extend(price["data"]["prices_min"])
+                        timestampsAll[7].extend(price["data"]["timestamps"])
+                    elif price["location"] == "Thetford":
+                        prices_minAll[8].extend(price["data"]["prices_min"])
+                        timestampsAll[8].extend(price["data"]["timestamps"])
 
         # Convert timestamps from epochs to datetime format
         # Timestamp data are 1000 times larger for some reason
@@ -411,18 +407,37 @@ class FetchPrice(commands.Cog):
 
         # Plot the data
         plt.style.use("seaborn")
-        fig = plt.figure(figsize=(10, 5))
+        fig, ax = plt.subplots(
+            nrows=2,
+            ncols=1,
+            figsize=(10, 6),
+            sharex=True,
+            gridspec_kw={"height_ratios": [2, 1]},
+        )
 
         # Plot labels and plot colors
         names = [
+            "Arthur's Rest",
             "Bridgewatch",
             "Caerleon",
             "Fort Sterling",
             "Lymhurst",
             "Martlock",
+            "Merlyn's Rest",
+            "Morgana's Rest",
             "Thetford",
         ]
-        colors = ["orange", "black", "silver", "green", "blue", "brown"]
+        colors = [
+            "red",
+            "orange",
+            "black",
+            "silver",
+            "forestgreen",
+            "blue",
+            "darkturquoise",
+            "purple",
+            "brown",
+        ]
 
         # Settings for date xaxis
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%Y"))
@@ -442,17 +457,24 @@ class FetchPrice(commands.Cog):
                     )
                 ]
 
-                plt.plot(x, y, ".-", label=names[i], color=colors[i])
+                if i in (0, 6, 7):
+                    k = 1
+                else:
+                    k = 0
+
+                ax[k].plot(x, y, ".-", label=names[i], color=colors[i])
             # Pass if prices_minAll = []
             except:
                 pass
 
         plt.gcf().autofmt_xdate()
-        plt.title(f"Historical Minimum Sell Order Prices for {itemName} ({item})")
-        plt.xlabel("Dates")
-        plt.ylabel("Silvers")
-        plt.legend()
-        fig.savefig("plot.png")
+        ax[0].set_title(f"Historical Minimum Sell Order Prices for {itemName} ({item})")
+        ax[0].set_ylabel("Silvers")
+        ax[0].legend(bbox_to_anchor=(1.02, 1), loc="upper left")
+        ax[1].set_xlabel("Dates")
+        ax[1].set_ylabel("Silvers")
+        ax[1].legend(bbox_to_anchor=(1.02, 1), loc="upper left")
+        plt.savefig("plot.png", bbox_inches="tight")
 
         return
 
