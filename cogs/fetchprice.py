@@ -51,10 +51,10 @@ class FetchPrice(commands.Cog):
 
         # API URLs
         self.apiURL = "https://www.albion-online-data.com/api/v2/stats/prices/"
-        self.locationURL = "?locations=Caerleon,Lymhurst,Martlock,Bridgewatch,FortSterling,Thetford,ArthursRest,MerlynsRest,MorganasRest"
+        self.locationURL = "?locations=Caerleon,Lymhurst,Martlock,Bridgewatch,FortSterling,Thetford,ArthursRest,MerlynsRest,MorganasRest,BlackMarket"
         self.iconURL = "https://gameinfo.albiononline.com/api/gameinfo/items/"
         self.historyURL = "https://www.albion-online-data.com/api/v1/stats/charts/"
-        self.historyLocationURL = "&locations=Thetford,Martlock,Caerleon,Lymhurst,Bridgewatch,FortSterling,ArthursRest,MerlynsRest,MorganasRest"
+        self.historyLocationURL = "&locations=Thetford,Martlock,Caerleon,Lymhurst,Bridgewatch,FortSterling,ArthursRest,MerlynsRest,MorganasRest,BlackMarket"
 
         # Bot will search items through this list
         # There are also different localization names
@@ -336,11 +336,11 @@ class FetchPrice(commands.Cog):
         for i in range(1, 1 + numDays):
             dates[i - 1] = (today - DT.timedelta(days=i)).strftime("%m-%d-%Y")
 
-        # List will have 9 different indices for 9 different cities
+        # List will have 10 different indices for 10 different cities
         # The indices corresponds to this ordering of cities (Alphabetical):
-        # Arthurs, Bridgewatch, Caerleon, Fort Sterling, Lymhurst, Martlock, Merlyns, Morganas, Thetford
-        prices_minAll = [[], [], [], [], [], [], [], [], []]
-        timestampsAll = [[], [], [], [], [], [], [], [], []]
+        # Arthurs, BlackMarket, Bridgewatch, Caerleon, Fort Sterling, Lymhurst, Martlock, Merlyns, Morganas, Thetford
+        prices_minAll = [[], [], [], [], [], [], [], [], [], []]
+        timestampsAll = [[], [], [], [], [], [], [], [], [], []]
 
         # Retrieve prices and timestamps of each city from each date
         for date in dates:
@@ -363,30 +363,33 @@ class FetchPrice(commands.Cog):
                     if price["location"] == "Arthurs Rest":
                         prices_minAll[0].extend(price["data"]["prices_min"])
                         timestampsAll[0].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Bridgewatch":
+                    elif price["location"] == "Black Market":
                         prices_minAll[1].extend(price["data"]["prices_min"])
                         timestampsAll[1].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Caerleon":
+                    elif price["location"] == "Bridgewatch":
                         prices_minAll[2].extend(price["data"]["prices_min"])
                         timestampsAll[2].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Fort Sterling":
+                    elif price["location"] == "Caerleon":
                         prices_minAll[3].extend(price["data"]["prices_min"])
                         timestampsAll[3].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Lymhurst":
+                    elif price["location"] == "Fort Sterling":
                         prices_minAll[4].extend(price["data"]["prices_min"])
                         timestampsAll[4].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Martlock":
+                    elif price["location"] == "Lymhurst":
                         prices_minAll[5].extend(price["data"]["prices_min"])
                         timestampsAll[5].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Merlyns Rest":
+                    elif price["location"] == "Martlock":
                         prices_minAll[6].extend(price["data"]["prices_min"])
                         timestampsAll[6].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Morganas Rest":
+                    elif price["location"] == "Merlyns Rest":
                         prices_minAll[7].extend(price["data"]["prices_min"])
                         timestampsAll[7].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Thetford":
+                    elif price["location"] == "Morganas Rest":
                         prices_minAll[8].extend(price["data"]["prices_min"])
                         timestampsAll[8].extend(price["data"]["timestamps"])
+                    elif price["location"] == "Thetford":
+                        prices_minAll[9].extend(price["data"]["prices_min"])
+                        timestampsAll[9].extend(price["data"]["timestamps"])
 
         # Convert timestamps from epochs to datetime format
         # Timestamp data are 1000 times larger for some reason
@@ -418,6 +421,7 @@ class FetchPrice(commands.Cog):
         # Plot labels and plot colors
         names = [
             "Arthur's Rest",
+            "Black Market",
             "Bridgewatch",
             "Caerleon",
             "Fort Sterling",
@@ -429,6 +433,7 @@ class FetchPrice(commands.Cog):
         ]
         colors = [
             "red",
+            "rosybrown",
             "orange",
             "black",
             "silver",
@@ -457,7 +462,7 @@ class FetchPrice(commands.Cog):
                     )
                 ]
 
-                if i in (0, 6, 7):
+                if i in (0, 7, 8):
                     k = 1
                 else:
                     k = 0
