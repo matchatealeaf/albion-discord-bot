@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- More localizations for item search.
+- Multithreading for requests to Data Project's API, increased query time significantly. (Done)
+
+### Changes
+
+- Better method for item matching using difflib.
+- Removed 7 days plot for Outlands' markets---Arthur's Rest, Merlyn's Rest, and Morgana's Rest. Since data for them are scarce and plots are mostly empty.
+- Separate the rows for Royal's markets, Outlands' markets, and Black Market, in Discord's embed.
+
+### Removed
+
+- Removed Jaccard edit distance function for item matching, difflib will suffice.
+
 ## 2020-02-06
 
 ### Added
