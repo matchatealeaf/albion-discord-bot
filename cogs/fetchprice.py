@@ -4,7 +4,7 @@ import urllib.request
 import json
 import datetime as DT
 import statistics
-from difflib import SequenceMatcher
+import difflib
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import configparser
@@ -24,7 +24,7 @@ class FetchPrice(commands.Cog):
     Functions:
         - item_match(item)
             Find closest matching item name/ID of input item.
-            Uses Jaccard distance or difflib.
+            Uses difflib.
             Returns first 4 closest match.
         - grabHistory(item)
             Get item's 7 days historical prices for all cities.
@@ -68,7 +68,7 @@ class FetchPrice(commands.Cog):
 
         - Usage: <commandPrefix> price <item name>
         - Item name can also be its ID
-        - Uses Jaccard edit distance/difflib for item name recognition.
+        - Uses difflib for item name recognition.
         - Outputs as Discord Embed with thumbnail.
         - Plots 7 days historical prices.
         """
@@ -87,7 +87,7 @@ class FetchPrice(commands.Cog):
 
         await ctx.channel.trigger_typing()
 
-        # Jaccard edit distance/difflib for input search
+        # difflib for input search
         itemNames, itemIDs = self.item_match(item)
 
         # Grab prices from full URL
@@ -232,12 +232,11 @@ class FetchPrice(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Please specify item.")
 
-    def item_match(self, inputWord, option="difflib"):
+    def item_match(self, inputWord):
         """Find closest matching item name and ID of input item.
 
         - Matches both item ID (UniqueName) and item name (LocalizedNames)
-        - Uses Jaccard distance/difflib. (difflib by default)
-        - I find difflib to be better.
+        - Uses difflib.
         - Returns 4 closest match.
         """
 
@@ -245,6 +244,7 @@ class FetchPrice(commands.Cog):
         itemIDs = []
         jDists = []
 
+        # Open list of items
         try:
             with open(self.itemList, "r", encoding="utf-8") as inFile:
                 data = json.load(inFile)
@@ -260,16 +260,8 @@ class FetchPrice(commands.Cog):
                 w1 = inputWord.lower()
                 w2 = indivData["UniqueName"].lower()
 
-                # Use jaccard or difflib's SequenceMatcher
-                if option == "jaccard":
-                    # Jaccard distance = 1 - (|w1 ∩ w2|/|w1 ∪ w2|)
-                    w1 = set(w1)
-                    w2 = set(w2)
-                    jDist = 1 - (len(w1.intersection(w2)) / len(w1.union(w2)))
-
-                else:
-                    jDist = 1 - SequenceMatcher(None, w1, w2).ratio()
-
+                # Use difflib's SequenceMatcher
+                jDist = 1 - difflib.SequenceMatcher(None, w1, w2).ratio()
                 jDists.append([jDist, i])
 
             # If item has no 'UniqueName'
@@ -280,18 +272,17 @@ class FetchPrice(commands.Cog):
             # Calculate distance for item name (LocalizedNames)
             try:
                 w1 = inputWord.lower()
-                w2 = indivData["LocalizedNames"]["EN-US"].lower()
 
-                # Use jaccard or difflib's SequenceMatcher
-                if option == "jaccard":
-                    # Jaccard distance = 1 - (|w1 ∩ w2|/|w1 ∪ w2|)
-                    w1 = set(w1)
-                    w2 = set(w2)
-                    jDist = 1 - (len(w1.intersection(w2)) / len(w1.union(w2)))
+                # Get distance for all localizations
+                localDists = []
+                for name in indivData["LocalizedNames"]:
+                    w2 = indivData["LocalizedNames"][name].lower()
 
-                else:
-                    jDist = 1 - SequenceMatcher(None, w1, w2).ratio()
+                    localDist = 1 - difflib.SequenceMatcher(None, w1, w2).ratio()
+                    localDists.append(localDist)
 
+                # Pick the closest distance as jDist
+                jDist = min(localDists)
                 jDists.append([jDist, i])
 
             # If item has no 'LocalizedNames'
