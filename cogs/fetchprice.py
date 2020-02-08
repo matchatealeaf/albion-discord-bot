@@ -328,13 +328,12 @@ class FetchPrice(commands.Cog):
 
             return newData, indices
 
-        # Find dates of past 7 days
+        # Find API URL for past 7 days
         # historyURL requires dates in %m-%d-%Y format
         today = DT.datetime.utcnow()
         numDays = 7
-        dates = [None] * numDays
-        for i in range(1, 1 + numDays):
-            dates[i - 1] = (today - DT.timedelta(days=i)).strftime("%m-%d-%Y")
+        date = (today - DT.timedelta(days=numDays)).strftime("%m-%d-%Y")
+        fullURL = self.historyURL + item + "?date=" + date + self.historyLocationURL
 
         # List will have 10 different indices for 10 different cities
         # The indices corresponds to this ordering of cities (Alphabetical):
@@ -342,54 +341,47 @@ class FetchPrice(commands.Cog):
         prices_minAll = [[], [], [], [], [], [], [], [], [], []]
         timestampsAll = [[], [], [], [], [], [], [], [], [], []]
 
-        # Retrieve prices and timestamps of each city from each date
-        for date in dates:
+        # Get price
+        try:
+            with urllib.request.urlopen(fullURL) as url:
+                prices = json.loads(url.read().decode())
 
-            # Raise exception if cannot get prices
-            try:
-                fullURL = (
-                    self.historyURL + item + "?date=" + date + self.historyLocationURL
-                )
-                with urllib.request.urlopen(fullURL) as url:
-                    prices = json.loads(url.read().decode())
-            except Exception as e:
-                print(e)
-                return
+        except Exception as e:
+            print(e)
+            return
 
-            else:
-                # Iterates over each city's prices
-                # and extend data to their corresponding index
-                for price in prices:
-                    if price["location"] == "Arthurs Rest":
-                        prices_minAll[0].extend(price["data"]["prices_min"])
-                        timestampsAll[0].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Black Market":
-                        prices_minAll[1].extend(price["data"]["prices_min"])
-                        timestampsAll[1].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Bridgewatch":
-                        prices_minAll[2].extend(price["data"]["prices_min"])
-                        timestampsAll[2].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Caerleon":
-                        prices_minAll[3].extend(price["data"]["prices_min"])
-                        timestampsAll[3].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Fort Sterling":
-                        prices_minAll[4].extend(price["data"]["prices_min"])
-                        timestampsAll[4].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Lymhurst":
-                        prices_minAll[5].extend(price["data"]["prices_min"])
-                        timestampsAll[5].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Martlock":
-                        prices_minAll[6].extend(price["data"]["prices_min"])
-                        timestampsAll[6].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Merlyns Rest":
-                        prices_minAll[7].extend(price["data"]["prices_min"])
-                        timestampsAll[7].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Morganas Rest":
-                        prices_minAll[8].extend(price["data"]["prices_min"])
-                        timestampsAll[8].extend(price["data"]["timestamps"])
-                    elif price["location"] == "Thetford":
-                        prices_minAll[9].extend(price["data"]["prices_min"])
-                        timestampsAll[9].extend(price["data"]["timestamps"])
+        else:
+            for price in prices:
+                if price["location"] == "Arthurs Rest":
+                    prices_minAll[0].extend(price["data"]["prices_min"])
+                    timestampsAll[0].extend(price["data"]["timestamps"])
+                elif price["location"] == "Black Market":
+                    prices_minAll[1].extend(price["data"]["prices_min"])
+                    timestampsAll[1].extend(price["data"]["timestamps"])
+                elif price["location"] == "Bridgewatch":
+                    prices_minAll[2].extend(price["data"]["prices_min"])
+                    timestampsAll[2].extend(price["data"]["timestamps"])
+                elif price["location"] == "Caerleon":
+                    prices_minAll[3].extend(price["data"]["prices_min"])
+                    timestampsAll[3].extend(price["data"]["timestamps"])
+                elif price["location"] == "Fort Sterling":
+                    prices_minAll[4].extend(price["data"]["prices_min"])
+                    timestampsAll[4].extend(price["data"]["timestamps"])
+                elif price["location"] == "Lymhurst":
+                    prices_minAll[5].extend(price["data"]["prices_min"])
+                    timestampsAll[5].extend(price["data"]["timestamps"])
+                elif price["location"] == "Martlock":
+                    prices_minAll[6].extend(price["data"]["prices_min"])
+                    timestampsAll[6].extend(price["data"]["timestamps"])
+                elif price["location"] == "Merlyns Rest":
+                    prices_minAll[7].extend(price["data"]["prices_min"])
+                    timestampsAll[7].extend(price["data"]["timestamps"])
+                elif price["location"] == "Morganas Rest":
+                    prices_minAll[8].extend(price["data"]["prices_min"])
+                    timestampsAll[8].extend(price["data"]["timestamps"])
+                elif price["location"] == "Thetford":
+                    prices_minAll[9].extend(price["data"]["prices_min"])
+                    timestampsAll[9].extend(price["data"]["timestamps"])
 
         # Convert timestamps from epochs to datetime format
         # Timestamp data are 1000 times larger for some reason
@@ -410,13 +402,7 @@ class FetchPrice(commands.Cog):
 
         # Plot the data
         plt.style.use("seaborn")
-        fig, ax = plt.subplots(
-            nrows=2,
-            ncols=1,
-            figsize=(10, 6),
-            sharex=True,
-            gridspec_kw={"height_ratios": [2, 1]},
-        )
+        plt.figure(figsize=(10, 6))
 
         # Plot labels and plot colors
         names = [
@@ -451,34 +437,29 @@ class FetchPrice(commands.Cog):
         # Iterate over all cities and plot each one
         for (i, timestamps) in enumerate(timestampsAll):
             try:
-                # Sort data first in ascending timestamps
-                x, y = [
-                    list(x)
-                    for x in zip(
-                        *sorted(
-                            zip(timestampsAll[i], prices_minAll[i]),
-                            key=lambda pair: pair[0],
+                if i not in (0, 7, 8):
+                    # Sort data first in ascending timestamps
+                    x, y = [
+                        list(x)
+                        for x in zip(
+                            *sorted(
+                                zip(timestampsAll[i], prices_minAll[i]),
+                                key=lambda pair: pair[0],
+                            )
                         )
-                    )
-                ]
+                    ]
 
-                if i in (0, 7, 8):
-                    k = 1
-                else:
-                    k = 0
+                    plt.plot(x, y, ".-", label=names[i], color=colors[i])
 
-                ax[k].plot(x, y, ".-", label=names[i], color=colors[i])
             # Pass if prices_minAll = []
             except:
                 pass
 
         plt.gcf().autofmt_xdate()
-        ax[0].set_title(f"Historical Minimum Sell Order Prices for {itemName} ({item})")
-        ax[0].set_ylabel("Silvers")
-        ax[0].legend(bbox_to_anchor=(1.02, 1), loc="upper left")
-        ax[1].set_xlabel("Dates")
-        ax[1].set_ylabel("Silvers")
-        ax[1].legend(bbox_to_anchor=(1.02, 1), loc="upper left")
+        plt.title(f"Historical Minimum Sell Order Prices for {itemName} ({item})")
+        plt.xlabel("Dates")
+        plt.ylabel("Silvers")
+        plt.legend(bbox_to_anchor=(1.02, 1), loc="upper left")
         plt.savefig("plot.png", bbox_inches="tight")
 
         return
