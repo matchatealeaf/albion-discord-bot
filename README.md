@@ -4,6 +4,8 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
+<a href='https://ko-fi.com/Z8Z11EXA0' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
 ## Meet The Assistant
 
 ![](Images/eg_price.png)
@@ -19,7 +21,55 @@ Click here:
 
 Or, **host it yourself**.
 
-### Hosting it yourself
+## Features
+
+```
+emilie price <item name>
+```
++ Returns latest minimum sell order prices as Discord embed, and plots 7 days historical prices. (First screenshot)
+```
+emilie quick <item name>
+```
++ Same as previous command, but no plotting of 7 days historical prices (faster).
+```
+emilie search <option> <player/guild name>
+```
++ `<option>` can be `player` or `guild`.
++ Search and returns details about a player/guild.
++ [Screenshot: Searching for player](Images/eg_player.png)
++ [Screenshot: Searching for guild](Images/eg_guild.png)
+
+Admin commands:
+```
+emilie extension <option> <cogs filenames>
+```
++ `<option>` can be `load`, `unload`, `reload`.
++ Load/Unload/Reload cogs in the cogs folder, e.g. if you want to remove or add certain features.
+```
+emilie ping
+```
++ Bot will return the latency.
+```
+emilie eval <python variables/generators>
+```
++ eval is simply the Python function [eval](https://docs.python.org/3.5/library/functions.html#eval).
++ Allows you to check stuffs that the bot knows, i.e. list of members, servers the bot is in etc.
++ [Screenshot: Listing all users with the role 'Member'](Images/eg_member.png)
+```
+emilie exec <python codes>
+```
++ exec is the Python function [exec](https://docs.python.org/3.5/library/functions.html#exec).
++ This is a powerful command and care must be taken when using it.
++ This command allows you to run any Python code, thus it can be abused to spam or perform tasks that breaks the bot.
++ [Screenshot: Finding the first 300 primes](Images/eg_primes.png) (I know this is arbitrary... but just to show you what it can do.)
+
+The eval and the exec commands are there because I got tired of adding features to the bot.
+
+I don't have to implement anything if I can simply run arbitrary codes.
+
+*- Famous last words before breaking everything*
+
+## Hosting it yourself
 
 #### Create a Discord bot account
 
@@ -97,63 +147,21 @@ onlyWork = False
   conda install flask matplotlib
   ```
 
-## Features
+## Planned Features
 
-```
-emilie price <item name>
-```
-+ Returns latest minimum sell order prices as Discord embed, and plots 7 days historical prices. (First screenshot)
-```
-emilie quick <item name>
-```
-+ Same as previous command, but no plotting of 7 days historical prices (faster).
-```
-emilie search <option> <player/guild name>
-```
-+ `<option>` can be `player` or `guild`.
-+ Search and returns details about a player/guild.
-+ [Screenshot: Searching for player](Images/eg_player.png)
-+ [Screenshot: Searching for guild](Images/eg_guild.png)
-
-Admin commands:
-```
-emilie extension <option> <cogs filenames>
-```
-+ `<option>` can be `load`, `unload`, `reload`.
-+ Load/Unload/Reload cogs in the cogs folder, e.g. if you want to remove or add certain features.
-```
-emilie ping
-```
-+ Bot will return the latency.
-```
-emilie eval <python variables/generators>
-```
-+ eval is simply the Python function [eval](https://docs.python.org/3.5/library/functions.html#eval).
-+ Allows you to check stuffs that the bot knows, i.e. list of members, servers the bot is in etc.
-+ [Screenshot: Listing all users with the role 'Member'](Images/eg_member.png)
-```
-emilie exec <python codes>
-```
-+ exec is the Python function [exec](https://docs.python.org/3.5/library/functions.html#exec).
-+ This is a powerful command and care must be taken when using it.
-+ This command allows you to run any Python code, thus it can be abused to spam or perform tasks that breaks the bot.
-+ [Screenshot: Finding the first 300 primes](Images/eg_primes.png) (I know this is arbitrary... but just to show you what it can do.)
-
-The eval and the exec commands are there because I got tired of adding features to the bot.
-
-I don't have to implement anything if I can simply run arbitrary codes.
-
-*- Famous last words before breaking everything*
-
-## Future Works
-
-+ Allow different localizations for item search.
-  + This is possible but not implemented yet.
-  + Items are searched via the `item_data.json` file, which already have different localizations.
 + Item data search to show recipes etc.
   + This is also possible but not implemented yet.
-  + The item API is already included in the the cog **cogs/search.py**, but nothing is done with it yet.
-+ ~~Host a bot myself so people can use the bot without having to host their own.~~
+  + The item search API is already included in the the cog **cogs/search.py**, but nothing is done with it yet.
+
+## Contributing
+
+I would greatly appreciate it if you can help in any of the following ways:
+
++ If you play the game frequently, download and run the [Data Project Client](https://www.albion-online-data.com/) while playing the game.
++ If you have some programming know-how, contribute some new features, bug fixes, or optimizations to Emilie.
++ If you find Emilie's forced labors useful to you, please consider a small donation. Your donation will help Emilie find a new home in a better server.
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Z8Z11EXA0)
 
 ## Extra Background
 
