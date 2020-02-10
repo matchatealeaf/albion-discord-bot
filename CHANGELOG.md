@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 2020-02-10
 
+### Added
+
+- Added gold prices plotting command.
+	- `emilie gold <number of days to plot>`.
+	- For example, `emilie gold 7` will plot gold prices for the past 7 days.
+	- Also list past 6 hours gold prices.
+
 ### Fixes
 
 - Rolled back to old JSON entries' names with snake_case.

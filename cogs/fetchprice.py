@@ -50,9 +50,11 @@ class FetchPrice(commands.Cog):
         self.debug = configs["General"].getboolean("debug")
 
         # API URLs
+        self.iconURL = "https://gameinfo.albiononline.com/api/gameinfo/items/"
+        # Latest
         self.apiURL = "https://www.albion-online-data.com/api/v2/stats/prices/"
         self.locationURL = "?locations=Caerleon,Lymhurst,Martlock,Bridgewatch,FortSterling,Thetford,ArthursRest,MerlynsRest,MorganasRest,BlackMarket"
-        self.iconURL = "https://gameinfo.albiononline.com/api/gameinfo/items/"
+        # Historical
         self.historyURL = "https://www.albion-online-data.com/api/v1/stats/charts/"
         self.historyLocationURL = "&locations=Thetford,Martlock,Caerleon,Lymhurst,Bridgewatch,FortSterling,ArthursRest,MerlynsRest,MorganasRest,BlackMarket"
 
@@ -78,7 +80,7 @@ class FetchPrice(commands.Cog):
 
         # Debug message
         if self.debug:
-            await self.debugChannel.send(f"{ctx.author} -> {command} {item}")
+            await self.debugChannel.send(f"{ctx.author} -> {ctx.message.content}")
 
         # Check if in workChannel
         if self.onlyWork:
@@ -223,7 +225,7 @@ class FetchPrice(commands.Cog):
 
             if self.debug:
                 await self.debugChannel.send(
-                    f"{ctx.author} -> {command} {item} | Matched -> {itemNames[0]} ({itemIDs[0]})"
+                    f"{ctx.author} -> {ctx.message.content} | Matched -> {itemNames[0]} ({itemIDs[0]})"
                 )
 
     # Error message of prices
