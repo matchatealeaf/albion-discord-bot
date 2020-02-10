@@ -39,6 +39,12 @@ emilie search <option> <player/guild name>
 + [Screenshot: Searching for player](Images/eg_player.png)
 + [Screenshot: Searching for guild](Images/eg_guild.png)
 
+```
+emilie gold <number of days>
+```
++ Return past 6 hours gold prices, and plots past `<number of days>` gold prices.
++ [Screenshot: Plotting gold prices for past 7 days](Images/eg_gold.png)
+
 Admin commands:
 ```
 emilie extension <option> <cogs filenames>
