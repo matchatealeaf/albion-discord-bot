@@ -18,8 +18,8 @@ class FetchPrice(commands.Cog):
         - prices
             Fetch current market prices from Data Project API.
             Also send plot of 7 days historical prices.
-		- quick (part of prices)
-			Same as prices command but without plots (faster).
+                - quick (part of prices)
+                    Same as prices command but without plots (faster).
 
     Functions:
         - item_match(item)
@@ -112,6 +112,10 @@ class FetchPrice(commands.Cog):
             sellPriceMinStringAll = []
 
             for (i, indivData) in enumerate(data):
+
+                # Skip if no data for entry
+                if indivData["sell_price_min"] == 0:
+                    continue
 
                 # Convert timestamp to datetime format
                 # And find how long ago is timestamp in seconds
