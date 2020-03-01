@@ -108,13 +108,15 @@ class FetchPrice(commands.Cog):
                 raise Exception
 
             timeStringAll = []
+            timeStringAllBuy = []
             locationStringAll = []
             sellPriceMinStringAll = []
+            buyPriceMaxStringAll = []
 
             for (i, indivData) in enumerate(data):
 
                 # Skip if no data for entry
-                if indivData["sell_price_min"] == 0:
+                if indivData["sell_price_min"] == 0 and indivData["buy_price_max"] == 0:
                     continue
 
                 # Convert timestamp to datetime format
@@ -135,6 +137,24 @@ class FetchPrice(commands.Cog):
                     timeString = str(round(tdelta)) + " sec ago"
 
                 timeStringAll.append(timeString)
+
+                # Convert timestamp for max buy order price dates
+                timestamp = DT.datetime.strptime(
+                    indivData["buy_price_max_date"], "%Y-%m-%dT%H:%M:%S"
+                )
+                tdelta = DT.datetime.utcnow() - timestamp
+                tdelta = DT.timedelta.total_seconds(tdelta)
+
+                if tdelta >= 94608000:
+                    timeString = "NIL"
+                elif tdelta >= 3600:
+                    timeString = str(round(tdelta / 3600, 1)) + " hours ago"
+                elif tdelta >= 60:
+                    timeString = str(round(tdelta / 60)) + " mins ago"
+                else:
+                    timeString = str(round(tdelta)) + " sec ago"
+
+                timeStringAllBuy.append(timeString)
 
                 # Put quality beside location
                 try:
@@ -157,21 +177,39 @@ class FetchPrice(commands.Cog):
                 # Getting the minimum sell order prices
                 sellPriceMinStringAll.append(indivData["sell_price_min"])
 
+                # Getting the maximum buy order prices
+                buyPriceMaxStringAll.append(indivData["buy_price_max"])
+
             # Express in embed format
             # Basically just output list as column
             embedLocationString = ""
             embedPriceString = ""
             embedTimeString = ""
+            embedPriceStringBuy = ""
+            embedTimeStringBuy = ""
+            embedLocationStringBuy = ""
 
             for (i, locationString) in enumerate(locationStringAll):
-                embedLocationString += locationString + "\n"
-                embedPriceString += str(sellPriceMinStringAll[i]) + "\n"
-                embedTimeString += timeStringAll[i] + "\n"
+                # Don't output if no data
+                if sellPriceMinStringAll[i] != 0:
+                    embedLocationString += locationString + "\n"
+                    embedPriceString += str(sellPriceMinStringAll[i]) + "\n"
+                    embedTimeString += timeStringAll[i] + "\n"
+
+                if buyPriceMaxStringAll[i] != 0:
+                    embedLocationStringBuy += locationString + "\n"
+                    embedPriceStringBuy += str(buyPriceMaxStringAll[i]) + "\n"
+                    embedTimeStringBuy += timeStringAllBuy[i] + "\n"
 
             # Add the fields to Discord embed
             em.add_field(name="Locations", value=embedLocationString, inline=True)
             em.add_field(name="Min Sell Price", value=embedPriceString, inline=True)
             em.add_field(name="Last Updated", value=embedTimeString, inline=True)
+
+            # Add fields for buy orders
+            em.add_field(name="Locations", value=embedLocationStringBuy, inline=True)
+            em.add_field(name="Max Buy Price", value=embedPriceStringBuy, inline=True)
+            em.add_field(name="Last Updated", value=embedTimeStringBuy, inline=True)
 
         # If data is empty
         except:
