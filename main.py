@@ -15,7 +15,7 @@ configs.read(currentPath + "/config.ini")
 adminUsers = configs["General"]["adminUsers"].replace("'", "").split(", ")
 commandPrefix = configs["General"]["commandPrefix"].replace("'", "").split(", ")
 
-client = commands.Bot(
+client = commands.AutoShardedBot(
     command_prefix=commands.when_mentioned_or(*commandPrefix), case_insensitive=True
 )
 
