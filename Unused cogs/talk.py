@@ -67,7 +67,7 @@ class Talk(commands.Cog):
         afterRoles = [str(role) for role in after.roles]
 
         # Check if user became a member
-        if "Member" not in beforeRoles and "Member" in afterRoles:
+        if not (set(beforeRoles) & set(self.memberRoles)) and (set(afterRoles) & set(self.memberRoles)):
 
             """Enable/Disable debug message here
             await self.debugChannel.send(
