@@ -6,6 +6,8 @@
 
 <a href='https://ko-fi.com/Z8Z11EXA0' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
+**Prices are no longer updated currently. Please refer to: ![this post](https://forum.albiononline.com/index.php/Thread/122907-RELEASE-Discord-Assistant-Bot-Emilie/?postID=1025558#post1025558)**
+
 ## Meet The Assistant
 
 ![](Images/eg_price.png)
