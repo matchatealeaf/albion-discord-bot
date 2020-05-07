@@ -201,15 +201,18 @@ class FetchPrice(commands.Cog):
                     embedPriceStringBuy += str(buyPriceMaxStringAll[i]) + "\n"
                     embedTimeStringBuy += timeStringAllBuy[i] + "\n"
 
-            # Add the fields to Discord embed
-            em.add_field(name="Locations", value=embedLocationString, inline=True)
-            em.add_field(name="Min Sell Price", value=embedPriceString, inline=True)
-            em.add_field(name="Last Updated", value=embedTimeString, inline=True)
+            # Only add embeds if there are prices to show
+            if embedPriceString:
+                # Add the fields to Discord embed
+                em.add_field(name="Locations", value=embedLocationString, inline=True)
+                em.add_field(name="Min Sell Price", value=embedPriceString, inline=True)
+                em.add_field(name="Last Updated", value=embedTimeString, inline=True)
 
-            # Add fields for buy orders
-            em.add_field(name="Locations", value=embedLocationStringBuy, inline=True)
-            em.add_field(name="Max Buy Price", value=embedPriceStringBuy, inline=True)
-            em.add_field(name="Last Updated", value=embedTimeStringBuy, inline=True)
+            if embedPriceStringBuy:
+                # Add fields for buy orders
+                em.add_field(name="Locations", value=embedLocationStringBuy, inline=True)
+                em.add_field(name="Max Buy Price", value=embedPriceStringBuy, inline=True)
+                em.add_field(name="Last Updated", value=embedTimeStringBuy, inline=True)
 
         # If data is empty
         except:
