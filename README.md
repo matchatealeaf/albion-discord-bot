@@ -1,12 +1,11 @@
 # Albion Online Discord Assistant Bot
 
 [![Invite: Emilie](https://img.shields.io/badge/Invite-Emilie-red?style=for-the-badge&logo=discord)](https://discordapp.com/api/oauth2/authorize?client_id=668794489988579348&permissions=256064&scope=bot)
+![Status: Online](https://img.shields.io/badge/Status-ONLINE-green?style=flat-square&logo=discover)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 <a href='https://ko-fi.com/Z8Z11EXA0' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
-
-**Prices are no longer updated currently. Please refer to: [this post](https://forum.albiononline.com/index.php/Thread/122907-RELEASE-Discord-Assistant-Bot-Emilie/?postID=1025558#post1025558)**
 
 ## Meet The Assistant
 
