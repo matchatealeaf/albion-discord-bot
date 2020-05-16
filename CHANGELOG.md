@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Item list is now retrieved directly from `ao-bin-dumps` project instead of from a `item_data.json`.
 	- The bot will recognise new items added by new patches without having to update `item_data.json`.
-	- __However, the bot will be slightly slower.__
+	- ~~However, the bot will be slightly slower.~~
 	- Bot will load the item list when the cog is first loaded.
 	- The bot will thus start up slower, but is faster when searching for items.
 
