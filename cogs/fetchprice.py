@@ -62,6 +62,13 @@ class FetchPrice(commands.Cog):
         # There are also different localization names
         self.itemList = "https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json"
 
+        # Open list of items
+        try:
+            with urllib.request.urlopen(self.itemList) as url:
+                self.itemData = json.loads(url.read().decode())
+        except Exception as e:
+            print(e)
+
     @commands.command(
         aliases=["price", "quick",]
     )
@@ -210,8 +217,12 @@ class FetchPrice(commands.Cog):
 
             if embedPriceStringBuy:
                 # Add fields for buy orders
-                em.add_field(name="Locations", value=embedLocationStringBuy, inline=True)
-                em.add_field(name="Max Buy Price", value=embedPriceStringBuy, inline=True)
+                em.add_field(
+                    name="Locations", value=embedLocationStringBuy, inline=True
+                )
+                em.add_field(
+                    name="Max Buy Price", value=embedPriceStringBuy, inline=True
+                )
                 em.add_field(name="Last Updated", value=embedTimeStringBuy, inline=True)
 
         # If data is empty
@@ -291,12 +302,8 @@ class FetchPrice(commands.Cog):
         itemIDs = []
         jDists = []
 
-        # Open list of items
-        try:
-            with urllib.request.urlopen(self.itemList) as url:
-                data = json.loads(url.read().decode())
-        except Exception as e:
-            print(e)
+        # Read item list
+        data = self.itemData
 
         # Loop through each item in item.json
         # Store distance and item index of each item
