@@ -63,8 +63,6 @@ class Sheets(commands.Cog):
         # The auth file that allows bot to edit google sheet (refer to google sheet's API)
         self.serviceFile = "editor_servicefile.json"
 
-        self.itemList = "item_data.json"
-
         # Start refresh task
         self.refresh.start()
 

@@ -60,7 +60,7 @@ class FetchPrice(commands.Cog):
 
         # Bot will search items through this list
         # There are also different localization names
-        self.itemList = os.path.dirname(currentPath) + "/item_data.json"
+        self.itemList = "https://raw.githubusercontent.com/broderickhyman/ao-bin-dumps/master/formatted/items.json"
 
     @commands.command(
         aliases=["price", "quick",]
@@ -293,12 +293,12 @@ class FetchPrice(commands.Cog):
 
         # Open list of items
         try:
-            with open(self.itemList, "r", encoding="utf-8") as inFile:
-                data = json.load(inFile)
+            with urllib.request.urlopen(self.itemList) as url:
+                data = json.loads(url.read().decode())
         except Exception as e:
             print(e)
 
-        # Loop through each item in item_data.json
+        # Loop through each item in item.json
         # Store distance and item index of each item
         for (i, indivData) in enumerate(data):
 
