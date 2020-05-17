@@ -7,6 +7,7 @@ import statistics
 import difflib
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.gridspec as gridspec
 import configparser
 import os
 
@@ -55,7 +56,7 @@ class FetchPrice(commands.Cog):
         self.apiURL = "https://www.albion-online-data.com/api/v2/stats/prices/"
         self.locationURL = "?locations=Caerleon,Lymhurst,Martlock,Bridgewatch,FortSterling,Thetford,ArthursRest,MerlynsRest,MorganasRest,BlackMarket"
         # Historical
-        self.historyURL = "https://www.albion-online-data.com/api/v1/stats/charts/"
+        self.historyURL = "https://www.albion-online-data.com/api/v2/stats/charts/"
         self.historyLocationURL = "&locations=Thetford,Martlock,Caerleon,Lymhurst,Bridgewatch,FortSterling,ArthursRest,MerlynsRest,MorganasRest,BlackMarket"
 
         # Bot will search items through this list
@@ -378,13 +379,21 @@ class FetchPrice(commands.Cog):
         today = DT.datetime.utcnow()
         numDays = 7
         date = (today - DT.timedelta(days=numDays)).strftime("%m-%d-%Y")
-        fullURL = self.historyURL + item + "?date=" + date + self.historyLocationURL
+        fullURL = (
+            self.historyURL
+            + item
+            + "?date="
+            + date
+            + self.historyLocationURL
+            + "&time-scale=1"
+        )
 
         # List will have 10 different indices for 10 different cities
         # The indices corresponds to this ordering of cities (Alphabetical):
         # Arthurs, BlackMarket, Bridgewatch, Caerleon, Fort Sterling, Lymhurst, Martlock, Merlyns, Morganas, Thetford
         prices_minAll = [[], [], [], [], [], [], [], [], [], []]
         timestampsAll = [[], [], [], [], [], [], [], [], [], []]
+        itemCountsAll = [[], [], [], [], [], [], [], [], [], []]
 
         # Get price
         try:
@@ -397,43 +406,53 @@ class FetchPrice(commands.Cog):
 
         else:
             for price in prices:
-                if price["location"] == "Arthurs Rest":
-                    prices_minAll[0].extend(price["data"]["prices_min"])
-                    timestampsAll[0].extend(price["data"]["timestamps"])
-                elif price["location"] == "Black Market":
-                    prices_minAll[1].extend(price["data"]["prices_min"])
-                    timestampsAll[1].extend(price["data"]["timestamps"])
-                elif price["location"] == "Bridgewatch":
-                    prices_minAll[2].extend(price["data"]["prices_min"])
-                    timestampsAll[2].extend(price["data"]["timestamps"])
-                elif price["location"] == "Caerleon":
-                    prices_minAll[3].extend(price["data"]["prices_min"])
-                    timestampsAll[3].extend(price["data"]["timestamps"])
-                elif price["location"] == "Fort Sterling":
-                    prices_minAll[4].extend(price["data"]["prices_min"])
-                    timestampsAll[4].extend(price["data"]["timestamps"])
-                elif price["location"] == "Lymhurst":
-                    prices_minAll[5].extend(price["data"]["prices_min"])
-                    timestampsAll[5].extend(price["data"]["timestamps"])
-                elif price["location"] == "Martlock":
-                    prices_minAll[6].extend(price["data"]["prices_min"])
-                    timestampsAll[6].extend(price["data"]["timestamps"])
-                elif price["location"] == "Merlyns Rest":
-                    prices_minAll[7].extend(price["data"]["prices_min"])
-                    timestampsAll[7].extend(price["data"]["timestamps"])
-                elif price["location"] == "Morganas Rest":
-                    prices_minAll[8].extend(price["data"]["prices_min"])
-                    timestampsAll[8].extend(price["data"]["timestamps"])
-                elif price["location"] == "Thetford":
-                    prices_minAll[9].extend(price["data"]["prices_min"])
-                    timestampsAll[9].extend(price["data"]["timestamps"])
+                if price["quality"] == 1:
+                    if price["location"] == "Arthurs Rest":
+                        prices_minAll[0].extend(price["data"]["prices_avg"])
+                        timestampsAll[0].extend(price["data"]["timestamps"])
+                        itemCountsAll[0].extend(price["data"]["item_count"])
+                    elif price["location"] == "Black Market":
+                        prices_minAll[1].extend(price["data"]["prices_avg"])
+                        timestampsAll[1].extend(price["data"]["timestamps"])
+                        itemCountsAll[1].extend(price["data"]["item_count"])
+                    elif price["location"] == "Bridgewatch":
+                        prices_minAll[2].extend(price["data"]["prices_avg"])
+                        timestampsAll[2].extend(price["data"]["timestamps"])
+                        itemCountsAll[2].extend(price["data"]["item_count"])
+                    elif price["location"] == "Caerleon":
+                        prices_minAll[3].extend(price["data"]["prices_avg"])
+                        timestampsAll[3].extend(price["data"]["timestamps"])
+                        itemCountsAll[3].extend(price["data"]["item_count"])
+                    elif price["location"] == "Fort Sterling":
+                        prices_minAll[4].extend(price["data"]["prices_avg"])
+                        timestampsAll[4].extend(price["data"]["timestamps"])
+                        itemCountsAll[4].extend(price["data"]["item_count"])
+                    elif price["location"] == "Lymhurst":
+                        prices_minAll[5].extend(price["data"]["prices_avg"])
+                        timestampsAll[5].extend(price["data"]["timestamps"])
+                        itemCountsAll[5].extend(price["data"]["item_count"])
+                    elif price["location"] == "Martlock":
+                        prices_minAll[6].extend(price["data"]["prices_avg"])
+                        timestampsAll[6].extend(price["data"]["timestamps"])
+                        itemCountsAll[6].extend(price["data"]["item_count"])
+                    elif price["location"] == "Merlyns Rest":
+                        prices_minAll[7].extend(price["data"]["prices_avg"])
+                        timestampsAll[7].extend(price["data"]["timestamps"])
+                        itemCountsAll[7].extend(price["data"]["item_count"])
+                    elif price["location"] == "Morganas Rest":
+                        prices_minAll[8].extend(price["data"]["prices_avg"])
+                        timestampsAll[8].extend(price["data"]["timestamps"])
+                        itemCountsAll[8].extend(price["data"]["item_count"])
+                    elif price["location"] == "Thetford":
+                        prices_minAll[9].extend(price["data"]["prices_avg"])
+                        timestampsAll[9].extend(price["data"]["timestamps"])
+                        itemCountsAll[9].extend(price["data"]["item_count"])
 
-        # Convert timestamps from epochs to datetime format
-        # Timestamp data are 1000 times larger for some reason
-        # So they must be divided by 1000 to get the actual epoch
+        # Parse datetime
         for (i, timestamps) in enumerate(timestampsAll):
             timestampsAll[i] = [
-                DT.datetime.fromtimestamp(timestamp / 1000) for timestamp in timestamps
+                DT.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S")
+                for timestamp in timestamps
             ]
 
         # Reject outliers from prices data as well as their corresponding timestamps
@@ -441,13 +460,10 @@ class FetchPrice(commands.Cog):
             try:
                 prices_minAll[i], indices = reject_outliers(prices)
                 timestampsAll[i] = [timestampsAll[i][j] for j in indices]
+                itemCountsAll[i] = [itemCountsAll[i][j] for j in indices]
             # Pass if prices_minAll = []
             except:
                 pass
-
-        # Plot the data
-        plt.style.use("seaborn")
-        plt.figure(figsize=(10, 6))
 
         # Plot labels and plot colors
         names = [
@@ -467,45 +483,85 @@ class FetchPrice(commands.Cog):
             "rosybrown",
             "orange",
             "black",
-            "silver",
+            "slategrey",
             "forestgreen",
             "blue",
             "darkturquoise",
             "purple",
             "brown",
         ]
+        plotOrders = [3, 2, 4, 5, 6, 9]
 
-        # Settings for date xaxis
-        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter("%m/%d/%Y"))
-        plt.gca().xaxis.set_major_locator(mdates.DayLocator())
+        # Plot the data
+        plt.style.use("seaborn")
+        fig, ax = plt.subplots(
+            nrows=3, ncols=2, figsize=(15, 8.75), sharex=True, sharey=True
+        )
+        ax = ax.flatten()
 
-        # Iterate over all cities and plot each one
-        for (i, timestamps) in enumerate(timestampsAll):
-            try:
-                if i not in (0, 7, 8):
-                    # Sort data first in ascending timestamps
-                    x, y = [
-                        list(x)
-                        for x in zip(
-                            *sorted(
-                                zip(timestampsAll[i], prices_minAll[i]),
-                                key=lambda pair: pair[0],
-                            )
+        fig.suptitle(f"7 Days Sell Order Prices for {itemName} ({item})")
+
+        fig.tight_layout(rect=[0, 0.03, 1, 0.95])
+        plt.subplots_adjust(wspace=0.025, hspace=0.15)
+
+        for j in range(6):
+            # Create gridspec in each subplot
+            gs = gridspec.GridSpecFromSubplotSpec(
+                2, 1, subplot_spec=ax[j], height_ratios=[4, 1], hspace=0.1
+            )
+
+            # First grid is for prices
+            ax0 = plt.subplot(gs[0])
+            # Second grid for item counts
+            if j > 0:
+                ax1 = plt.subplot(gs[1], sharex=ax0, sharey=axPrev)
+            else:
+                ax1 = plt.subplot(gs[1], sharex=ax0)
+
+            # Iterate over all cities and plot each one
+            for (i, timestamp) in enumerate(timestampsAll):
+                try:
+                    # Only plot those that are in plotOrders
+                    if i in plotOrders:
+                        ax0.plot(
+                            timestampsAll[i], prices_minAll[i], color="gray", alpha=0.3,
                         )
-                    ]
+                # Pass if prices_minAll = []
+                except:
+                    pass
 
-                    plt.plot(x, y, ".-", label=names[i], color=colors[i])
+            # Plot the main city
+            ax0.plot(
+                timestampsAll[plotOrders[j]],
+                prices_minAll[plotOrders[j]],
+                color=colors[plotOrders[j]],
+            )
 
-            # Pass if prices_minAll = []
-            except:
-                pass
+            # Plot item counts
+            ax1.bar(
+                timestampsAll[plotOrders[j]], itemCountsAll[plotOrders[j]], width=0.04,
+            )
 
-        plt.gcf().autofmt_xdate()
-        plt.title(f"Historical Minimum Sell Order Prices for {itemName} ({item})")
-        plt.xlabel("Dates")
-        plt.ylabel("Silvers")
-        plt.legend(bbox_to_anchor=(1.02, 1), loc="upper left")
-        plt.savefig("plot.png", bbox_inches="tight")
+            # Remember item counts axis for sharey
+            if j == 0:
+                axPrev = ax1
+
+            # Only show axis for left and bottom
+            plt.setp(ax0.get_xticklabels(), visible=False)
+            if j % 2:
+                plt.setp(ax0.get_yticklabels(), visible=False)
+                plt.setp(ax1.get_yticklabels(), visible=False)
+            else:
+                ax0.set_ylabel("Silvers")
+                ax1.set_ylabel("Volume")
+            if j not in (4, 5):
+                plt.setp(ax1.get_xticklabels(), visible=False)
+
+            # Title and date axis
+            ax0.set_title(f"{names[plotOrders[j]]}")
+            ax1.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d"))
+
+        fig.savefig("plot.png", bbox_inches="tight")
 
         return
 

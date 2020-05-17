@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2020-05-17
+
+### Changes
+
+- Historical prices now use v2 API of Albion Online Data Project.
+	- Historical prices are now hourly.
+	- Item counts at each hour are also added.
+- New historical price plot.
+	- No longer a spaghetti plot, especially with denser data (hourly).
+	- Item counts/volume added as a bar plot below each location.
+
 ## 2020-05-16
 
 ### Changes
