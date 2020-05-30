@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	- Debug messages used to include the Discord username of the user who called the command.
 	- This is keeping unnecessary data, and users' privacy are compromised for no reason at all.
 
+- Added debug messages to player and guild search command.
+
 ## 2020-05-17
 
 ### Changes

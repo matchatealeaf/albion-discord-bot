@@ -156,6 +156,12 @@ class Search(commands.Cog):
                 msg = await ctx.send(embed=em)
                 await msg.add_reaction("\u274c")  # Delete reaction button
 
+                # Debug message
+                if self.debug:
+                    await self.debugChannel.send(
+                        f"{ctx.message.content} | Matched -> {name})"
+                    )
+
             # Guild
             elif option.lower() == "guild" or option.lower() == "guilds":
 
@@ -276,13 +282,29 @@ class Search(commands.Cog):
                 msg = await ctx.send(embed=em)
                 await msg.add_reaction("\u274c")  # Delete reaction button
 
+                # Debug message
+                if self.debug:
+                    await self.debugChannel.send(
+                        f"{ctx.message.content} | Matched -> {guild})"
+                    )
+
             else:
                 await ctx.send(
                     f"Please specify a valid option.\nUsage: `search <option> <name>`\nOptions: `player` or `guild`."
                 )
 
+                # Debug message
+                if self.debug:
+                    await self.debugChannel.send(
+                        f"{ctx.message.content} | Invalid option.)"
+                    )
+
         except:
             await ctx.send(f"{option} {name} not found.")
+
+            # Debug message
+            if self.debug:
+                await self.debugChannel.send(f"{ctx.message.content} | Not found.)")
 
     # Error message of search
     @search.error
