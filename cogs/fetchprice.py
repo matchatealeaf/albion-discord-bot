@@ -88,7 +88,7 @@ class FetchPrice(commands.Cog):
 
         # Debug message
         if self.debug:
-            await self.debugChannel.send(f"{ctx.author} -> {ctx.message.content}")
+            await self.debugChannel.send(f"{ctx.message.content}")
 
         # Check if in workChannel
         if self.onlyWork:
@@ -282,7 +282,7 @@ class FetchPrice(commands.Cog):
 
             if self.debug:
                 await self.debugChannel.send(
-                    f"{ctx.author} -> {ctx.message.content} | Matched -> {itemNames[0]} ({itemIDs[0]})"
+                    f"{ctx.message.content} | Matched -> {itemNames[0]} ({itemIDs[0]})"
                 )
 
     # Error message of prices

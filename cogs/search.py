@@ -62,7 +62,7 @@ class Search(commands.Cog):
 
         # Debug message
         if self.debug:
-            await self.debugChannel.send(f"{ctx.author} -> search {option} {name}")
+            await self.debugChannel.send(f"{ctx.message.content}")
 
         # Check if in workChannel
         if self.onlyWork:

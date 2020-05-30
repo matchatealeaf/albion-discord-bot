@@ -43,7 +43,7 @@ class FetchGold(commands.Cog):
 
         # Debug message
         if self.debug:
-            await self.debugChannel.send(f"{ctx.author} -> {ctx.message.content}")
+            await self.debugChannel.send(f"{ctx.message.content}")
 
         # Check if in workChannel
         if self.onlyWork:
@@ -137,7 +137,7 @@ class FetchGold(commands.Cog):
 
             if self.debug:
                 await self.debugChannel.send(
-                    f"{ctx.author} -> {ctx.message.content} | Gold Matched"
+                    f"{ctx.message.content} | Gold Matched"
                 )
 
     # Error message of gold
