@@ -159,7 +159,7 @@ class Search(commands.Cog):
                 # Debug message
                 if self.debug:
                     await self.debugChannel.send(
-                        f"{ctx.message.content} | Matched -> {name})"
+                        f"{ctx.message.content} | Matched -> {name}")
                     )
 
             # Guild
@@ -285,7 +285,7 @@ class Search(commands.Cog):
                 # Debug message
                 if self.debug:
                     await self.debugChannel.send(
-                        f"{ctx.message.content} | Matched -> {guild})"
+                        f"{ctx.message.content} | Matched -> {guild}")
                     )
 
             else:
@@ -296,7 +296,7 @@ class Search(commands.Cog):
                 # Debug message
                 if self.debug:
                     await self.debugChannel.send(
-                        f"{ctx.message.content} | Invalid option.)"
+                        f"{ctx.message.content} | Invalid option.")
                     )
 
         except:
@@ -304,7 +304,7 @@ class Search(commands.Cog):
 
             # Debug message
             if self.debug:
-                await self.debugChannel.send(f"{ctx.message.content} | Not found.)")
+                await self.debugChannel.send(f"{ctx.message.content} | Not found.")
 
     # Error message of search
     @search.error
