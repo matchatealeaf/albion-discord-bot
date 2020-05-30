@@ -562,6 +562,7 @@ class FetchPrice(commands.Cog):
             ax1.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d"))
 
         fig.savefig("plot.png", bbox_inches="tight")
+        plt.close("all")
 
         return
 

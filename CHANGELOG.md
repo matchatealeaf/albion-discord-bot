@@ -16,6 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added debug messages to player and guild search command.
 
+### Fixes
+
+- Fixed bot running out of memory due to created figures not closing.
+	- Now closes all figure after the command is done running.
+	- Might cause some problems due to async behaviour?
+	- i.e. figures are closed before they can be sent?
+
 ## 2020-05-17
 
 ### Changes

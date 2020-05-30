@@ -125,6 +125,7 @@ class FetchGold(commands.Cog):
             plt.xlabel("Dates")
             plt.ylabel("Prices")
             plt.savefig("goldplot.png", bbox_inches="tight")
+            plt.close("all")
 
             # \u274c is a red X
             em.set_footer(text="React with \u274c to delete this post.")
