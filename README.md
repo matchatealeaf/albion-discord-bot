@@ -13,7 +13,7 @@
 
 Thanks to the [Albion Online Data Project](https://www.albion-online-data.com/), and the many players that download and run the Data Project [client](https://github.com/BroderickHyman/albiondata-client/releases) while playing the game, market price data are collected and shared freely with all Albion players. Perhaps the most popular tool that utilized these data is [AlbionOnline2D](https://www.albiononline2d.com/en/item).
 
-The Discord bot fetches the latest minimum sell order prices (same as AlbionOnline2D), and plots the past 7 days historical prices, for the item that you asked. (Notice the typo 'lether' instead of 'leather'). The assistant will find the closest match to your query and also provides item suggestions in case you forgot how to spell. What a sweet assistant.
+The Discord bot fetches the latest minimum sell order prices (same as AlbionOnline2D), and plots the past 7 days historical prices, for the item that you asked. The assistant will find the closest match to your query and also provides item suggestions in case you forgot how to spell. What a sweet assistant.
 
 ## How do I get the Assistant?
 
@@ -46,7 +46,7 @@ emilie gold <number of days>
 + Return past 6 hours gold prices, and plots past `<number of days>` gold prices.
 + [Screenshot: Plotting gold prices for past 7 days](Images/eg_gold.png)
 
-Admin commands:
+Admin commands (Only for self-hosted bots):
 ```
 emilie extension <option> <cogs filenames>
 ```
@@ -140,18 +140,16 @@ onlyWork = False
 + Python 3.6 or higher
 + [discord.py](https://github.com/Rapptz/discord.py)
   + The bot is written with discord.py, an async API.
-+ [flask](https://flask.palletsprojects.com/en/1.1.x/)
-  + flask is a micro web framework to host your bot.
 + [matplotlib](https://matplotlib.org/)
   + matplotlib is required to plot the 7 days historical prices.
 
   To install the required Python libraries, run the command:
   ```
-  pip install discord.py flask matplotlib
+  pip install discord.py matplotlib
   ```
-  Or if you have `conda` installed:
+  Or if you use `conda`:
   ```
-  conda install flask matplotlib
+  conda install matplotlib
   ```
 
 ## Planned Features
