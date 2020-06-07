@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 import os
-import keep_alive
 import logging
 import configparser
 
@@ -27,8 +26,6 @@ handler.setFormatter(
     logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
 )
 logger.addHandler(handler)
-
-keep_alive.keep_alive()
 
 
 @client.event
