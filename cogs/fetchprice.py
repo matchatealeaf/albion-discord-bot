@@ -51,7 +51,8 @@ class FetchPrice(commands.Cog):
         self.debug = configs["General"].getboolean("debug")
 
         # API URLs
-        self.iconURL = "https://gameinfo.albiononline.com/api/gameinfo/items/"
+        self.iconURL = "https://render.albiononline.com/v1/item/"  # + "T4_HIDE_LEVEL1@1.png?count=1&quality=1"
+
         # Latest
         self.apiURL = "https://www.albion-online-data.com/api/v2/stats/prices/"
         self.locationURL = "?locations=Caerleon,Lymhurst,Martlock,Bridgewatch,FortSterling,Thetford,ArthursRest,MerlynsRest,MorganasRest,BlackMarket"
@@ -245,12 +246,7 @@ class FetchPrice(commands.Cog):
             )
 
             # Adding thumbnail
-            # 'LEVEL1@1' itemID is 'LEVEL1' in item icon URL
-            # So we remove the last 2 char
-            if "@" in itemIDs[0]:
-                iconFullURL = self.iconURL + itemIDs[0][:-2]
-            else:
-                iconFullURL = self.iconURL + itemIDs[0]
+            iconFullURL = self.iconURL + itemIDs[0] + ".png"
 
             em.set_thumbnail(url=iconFullURL)
 
