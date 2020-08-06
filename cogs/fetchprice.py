@@ -202,12 +202,12 @@ class FetchPrice(commands.Cog):
                 # Don't output if no data
                 if sellPriceMinStringAll[i] != 0:
                     embedLocationString += locationString + "\n"
-                    embedPriceString += str(sellPriceMinStringAll[i]) + "\n"
+                    embedPriceString += format(sellPriceMinStringAll[i], ',d') + "\n"
                     embedTimeString += timeStringAll[i] + "\n"
 
                 if buyPriceMaxStringAll[i] != 0:
                     embedLocationStringBuy += locationString + "\n"
-                    embedPriceStringBuy += str(buyPriceMaxStringAll[i]) + "\n"
+                    embedPriceStringBuy += format(buyPriceMaxStringAll[i], ',d') + "\n"
                     embedTimeStringBuy += timeStringAllBuy[i] + "\n"
 
             # Only add embeds if there are prices to show

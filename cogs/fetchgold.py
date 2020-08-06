@@ -93,7 +93,7 @@ class FetchGold(commands.Cog):
             embedTimestampString = ""
 
             for i in range(1, 7):
-                embedGoldPriceString += str(goldPrices[-i]) + "\n"
+                embedGoldPriceString += format(goldPrices[-i], ',d') + "\n"
                 embedTimestampString += str(timeStamps[-i]) + "\n"
 
             # Add the fields to Discord embed
