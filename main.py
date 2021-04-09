@@ -43,13 +43,15 @@ async def on_ready():
     client.remove_command("help")
 
     # Load cogs in folder /cogs
-    try:
-        for filename in os.listdir(currentPath + "/cogs"):
-            if filename.endswith(".py"):
+    for filename in os.listdir(currentPath + "/cogs"):
+        if filename.endswith(".py"):
+            try:
                 client.load_extension(f"cogs.{filename[:-3]}")
-    except Exception as e:
-        print(e)
-        pass
+            except Exception as e:
+                print(e)
+                # reload again when load fails (no idea why this works)
+                client.reload_extension(f"cogs.{filename[:-3]}")
+                pass
 
     # Activity to 'Ready'
     await client.change_presence(activity=discord.Game("Ready"))
