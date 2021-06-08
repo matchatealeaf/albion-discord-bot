@@ -1,7 +1,5 @@
 # Albion Online Discord Assistant Bot
 
-[![Invite: Emilie](https://img.shields.io/badge/Invite-Emilie-red?style=for-the-badge&logo=discord)](https://discord.com/api/oauth2/authorize?client_id=668794489988579348&permissions=388160&scope=bot)
-![Status: Online](https://img.shields.io/badge/Status-ONLINE-green?style=flat-square&logo=discover)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
@@ -17,10 +15,7 @@ The Discord bot fetches the latest minimum sell order prices (same as AlbionOnli
 
 ## How do I get the Assistant?
 
-Click here:
-[![Invite: Emilie](https://img.shields.io/badge/Invite-Emilie-red?style=for-the-badge&logo=discord)](https://discordapp.com/api/oauth2/authorize?client_id=668794489988579348&permissions=256064&scope=bot)
-
-Or, **host it yourself**.
+**Host it yourself**.
 
 ## Features
 
