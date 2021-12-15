@@ -152,25 +152,6 @@ onlyWork = False
   + This is also possible but not implemented yet.
   + The item search API is already included in the the cog **cogs/search.py**, but nothing is done with it yet.
 
-## Contributing
-
-I would greatly appreciate it if you can help in any of the following ways:
-
-+ If you play the game frequently, download and run the [Data Project Client](https://www.albion-online-data.com/) while playing the game.
-+ If you have some programming know-how, contribute some new features, bug fixes, or optimizations to Emilie.
-+ If you find Emilie's forced labors useful to you, please consider a small donation. Your donation will help Emilie find a new home in a better server.
-
-## Extra Background
-
-This is a stripped-down version of a bot I made for my guild, Pangolin Trading Company. As I haven't been on Albion for quite a while, I am releasing the source codes of the bot so that the community can improve upon or implement their own bots. The stripped functions are those that were specific to the guild. For example:
-
-+ Fetch data from guild's Google Sheets
-+ Edit data in guild's Google Sheets
-+ Send guild's server welcome messages
-+ Send direct messages to guild members
-
-The cogs of these features are in the '**Unused cogs**' folder, so you can refer to them if you want to implement these features yourself.
-
 ## License
 See the [LICENSE](LICENSE) file for license rights and limitations.
 
