@@ -3,7 +3,6 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-<a href='https://ko-fi.com/Z8Z11EXA0' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 ## Meet The Assistant
 
@@ -160,8 +159,6 @@ I would greatly appreciate it if you can help in any of the following ways:
 + If you play the game frequently, download and run the [Data Project Client](https://www.albion-online-data.com/) while playing the game.
 + If you have some programming know-how, contribute some new features, bug fixes, or optimizations to Emilie.
 + If you find Emilie's forced labors useful to you, please consider a small donation. Your donation will help Emilie find a new home in a better server.
-
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Z8Z11EXA0)
 
 ## Extra Background
 
